@@ -31,7 +31,6 @@ with st.form(key='user_form'):
         email_valid = email_id.strip().endswith('@gmail.com') and '@' in email_id
      
         if phone_valid and email_valid:
-            # Check for existing records with the same email_id
             response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
 
         if response.data:
