@@ -42,7 +42,7 @@ if submit_button:
             # Check if the user with the same email already exists
             response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
 
-            if response.status_code == 400:
+            if response.status != 200:
                 st.error(f"Error fetching data from Supabase: {response.content}")
 
             else:
@@ -64,10 +64,13 @@ if submit_button:
                     # Insert data into a table
                     insert_response = supabase.table('User data').insert(data_to_insert).execute()
 
-                    if insert_response.status_code == 201:
-                        st.success("Form submitted successfully")
-                    else:
+                    if insert_response.status != 201:
                         st.error(f"Insertion failed: {insert_response.content}")
+                    else:
+                        st.success("Form submitted successfully")
+
+        except SupabaseException as e:
+            st.error(f"Supabase error: {e}")
 
         except Exception as e:
             st.error(f"Error: {e}")
