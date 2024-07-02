@@ -22,7 +22,7 @@ with st.form(key='user_form'):
     domain = st.selectbox('Domain', ['ML', 'DS', 'AI', 'DL', 'Other'])
     
     
-# Submit button
+ # Submit button
     submit_button = st.form_submit_button(label="Submit")
 
 # Display the submitted form data and store it in Supabase
@@ -33,7 +33,7 @@ if submit_button:
     if phone_valid and email_valid:
         response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
 
-        if response.data:
+        if response.get("data"):
             st.error("A record with this Email ID already exists.")
         else:
             # Insert data into Supabase
@@ -50,11 +50,11 @@ if submit_button:
                 # Insert data into a table
                 response = supabase.table('User data').insert(data).execute()
 
-                # Check for successful insertion (Supabase may not return status_code)
-                if response.status_code == 201:
+                # Check for successful insertion
+                if response.get("status") == 201:
                     st.success("Form submitted successfully")
                 else:
-                    st.error(f"Insertion failed: {response.status_code} - {response.error}")
+                    st.error(f"Insertion failed: {response.get('status')} - {response.get('error')}")
 
             except Exception as e:
                 st.error(f"Error: {e}")
