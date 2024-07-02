@@ -17,13 +17,16 @@ with st.form(key='user_form'):
         st.warning('Please enter a valid name containing only alphabetic characters.')
 
     if not (phone_number.isdigit() and len(phone_number) == 10):
-        st.warning('Please enter a valid 10-digit phone number.'))
+        st.warning('Please enter a valid 10-digit phone number.')
+
     email_id = st.text_input('Email ID')
-    if not (email_id.strip().endswith('@gmail.com') and '@' in email_id):
+
+    if not (email_id.strip().endswith("@gmail.com") and "@" in email_id):
         st.warning('Please enter a valid Gmail email address.')
+
     field = st.checkbox('Field')
     location = st.text_input('Location')
-    domain = st.selectbox('Domain', ['ML', 'DS', 'AI', 'DL', 'Other'])
+    domain = st.selectbox("Domain", ["ML", "DS", "AI", "DL", "Other"])
     
     
  # Submit button
