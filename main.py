@@ -10,10 +10,14 @@ supabase: Client = create_client(url, key)
 st.title('User_Registration_Info')
 
 with st.form(key='user_form'):
-    name = st.text_input('Name')
+    name = st.text_input("Name")
     phone_number = st.text_input("Phone Number")
+
+    if not name.isalpha():
+        st.warning('Please enter a valid name containing only alphabetic characters.')
+
     if not (phone_number.isdigit() and len(phone_number) == 10):
-        st.warning('Please enter a valid 10-digit phone number.')
+        st.warning('Please enter a valid 10-digit phone number.'))
     email_id = st.text_input('Email ID')
     if not (email_id.strip().endswith('@gmail.com') and '@' in email_id):
         st.warning('Please enter a valid Gmail email address.')
