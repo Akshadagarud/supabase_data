@@ -11,11 +11,10 @@ st.title('User_Registration_Info')
 
 with st.form(key='user_form'):
     name = st.text_input("Name")
-    phone_number = st.text_input("Phone Number")
-
     if not name.isalpha():
         st.warning('Please enter a valid name containing only alphabetic characters.')
-
+    
+    phone_number = st.text_input("Phone Number")
     if not (phone_number.isdigit() and len(phone_number) == 10):
         st.warning('Please enter a valid 10-digit phone number.')
 
