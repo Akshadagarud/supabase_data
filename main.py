@@ -51,5 +51,4 @@ if submit:
                 else:
                     st.error("Failed to insert data. Please try again.")
 
-    else:
-        st.warning("Please correct the highlighted fields and submit again.")
+    
