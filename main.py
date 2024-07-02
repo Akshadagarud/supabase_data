@@ -34,9 +34,9 @@ with st.form(key='user_form'):
             # Check for existing records with the same email_id
             response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
 
-             if response.data:
+        if response.data:
                 st.error("A record with this Email ID already exists.")
-             else:
+        else:
                 st.write('Form submitted successfully!')
                 
             
