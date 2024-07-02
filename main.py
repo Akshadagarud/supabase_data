@@ -35,29 +35,30 @@ with st.form(key='user_form'):
 if submit_button:
     phone_valid = phone_number.isdigit() and len(phone_number) == 10
     email_valid = email_id.strip().endswith("@gmail.com") and "@" in email_id
+    name_valid = name.isalpha()
 
-    if phone_valid and email_valid:
-        response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
+    if phone_valid and email_valid and name_valid:
+        try:
+            response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
 
-        if response.error:
-            st.error(f"Error fetching data from Supabase: {response.error}")
-        else:
-            data = response.get("data")
-
-            if data:
-                st.error("A record with this Email ID already exists.")
+            if response.error:
+                st.error(f"Error fetching data from Supabase: {response.error}")
             else:
-                # Insert data into Supabase
-                data_to_insert = {
-                    "name": name,
-                    "phone_number": phone_number,
-                    "email_id": email_id,
-                    "field": field,
-                    "location": location,
-                    "domain": domain
-                }
+                data = response.get("data")
 
-                try:
+                if data:
+                    st.error("A record with this Email ID already exists.")
+                else:
+                    # Insert data into Supabase
+                    data_to_insert = {
+                        "name": name,
+                        "phone_number": phone_number,
+                        "email_id": email_id,
+                        "field": field,
+                        "location": location,
+                        "domain": domain
+                    }
+
                     # Insert data into a table
                     insert_response = supabase.table('User data').insert(data_to_insert).execute()
 
@@ -66,8 +67,8 @@ if submit_button:
                     else:
                         st.success("Form submitted successfully")
 
-                except Exception as e:
-                    st.error(f"Error inserting data into Supabase: {e}")
+        except Exception as e:
+            st.error(f"Error: {e}")
 
     else:
         st.warning("Please correct the highlighted fields and submit again.")
