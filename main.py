@@ -22,43 +22,41 @@ with st.form(key='user_form'):
     domain = st.selectbox('Domain', ['ML', 'DS', 'AI', 'DL', 'Other'])
     
     
-    # Submit button
-    submit_button = st.form_submit_button(label='Submit')
+# Submit button
+    submit_button = st.form_submit_button(label="Submit")
 
 # Display the submitted form data and store it in Supabase
-    if submit_button:
-        phone_valid = phone_number.isdigit() and len(phone_number) == 10
-        email_valid = email_id.strip().endswith('@gmail.com') and '@' in email_id
-     
-        if phone_valid and email_valid:
-            response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
+if submit_button:
+    phone_valid = phone_number.isdigit() and len(phone_number) == 10
+    email_valid = email_id.strip().endswith("@gmail.com") and "@" in email_id
+
+    if phone_valid and email_valid:
+        response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
 
         if response.data:
-                st.error("A record with this Email ID already exists.")
+            st.error("A record with this Email ID already exists.")
         else:
-                st.write('Form submitted successfully!')
-                
-            
-    
-    # Insert data into Supabase
-    data = {
-        'name': name,
-        'phone_number': phone_number,
-        'email_id': email_id,
-        'field': field,
-        'location': location,
-        'domain': domain
-    }
-    
-    try:
-    # Insert data into a table
-        response = supabase.table('User data').insert(data).execute()
+            # Insert data into Supabase
+            data = {
+                "name": name,
+                "phone_number": phone_number,
+                "email_id": email_id,
+                "field": field,
+                "location": location,
+                "domain": domain
+            }
 
-    # Check for successful insertion (Supabase may not return status_code)
-        if response.status == 201:
-           print("Insertion successful:", response.get('data'))
-        else:
-           print("Insertion failed:", response.get('status'), response.get('error'))
+            try:
+                # Insert data into a table
+                response = supabase.table('User data').insert(data).execute()
 
-    except Exception as e:
-        print("Error:", e)
+                # Check for successful insertion (Supabase may not return status_code)
+                if response.status_code == 201:
+                    st.success("Form submitted successfully")
+                else:
+                    st.error(f"Insertion failed: {response.status_code} - {response.error}")
+
+            except Exception as e:
+                st.error(f"Error: {e}")
+    else:
+        st.warning("Please correct the highlighted fields and submit again.")
