@@ -39,10 +39,12 @@ if submit_button:
 
     if phone_valid and email_valid and name_valid:
         try:
+            # Check if the user with the same email already exists
             response = supabase.table("User data").select("*").eq("email_id", email_id).execute()
 
-            if response.error:
-                st.error(f"Error fetching data from Supabase: {response.error}")
+            if response.status_code == 400:
+                st.error(f"Error fetching data from Supabase: {response.content}")
+
             else:
                 data = response.get("data")
 
@@ -62,10 +64,10 @@ if submit_button:
                     # Insert data into a table
                     insert_response = supabase.table('User data').insert(data_to_insert).execute()
 
-                    if insert_response.error:
-                        st.error(f"Insertion failed: {insert_response.error}")
-                    else:
+                    if insert_response.status_code == 201:
                         st.success("Form submitted successfully")
+                    else:
+                        st.error(f"Insertion failed: {insert_response.content}")
 
         except Exception as e:
             st.error(f"Error: {e}")
