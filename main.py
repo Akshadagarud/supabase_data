@@ -43,7 +43,7 @@ if submit:
                     "email_id": email_id,
                     "location": location,
                     "domain": domain,
-                    "toggle_field": field
+                    "field": field
                 }
                 response = supabase.table("User data").insert([data]).execute()
 
