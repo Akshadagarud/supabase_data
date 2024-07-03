@@ -45,7 +45,7 @@ if submit:
                     "domain": domain,
                     "toggle_field": field
                 }
-                response = supabase.table("basic_form").insert([data]).execute()
+                response = supabase.table("User data").insert([data]).execute()
 
                 if response:
                     st.success("Data inserted successfully.")
