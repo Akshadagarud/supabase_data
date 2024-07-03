@@ -33,7 +33,7 @@ if submit:
         elif not re.match(r"^[a-zA-Z ]+$", location):
             st.warning("Invalid location format. Please enter a name that only contains alphabets and spaces.")
         else:
-            existing_email = supabase.table("basic_form").select("email").eq("email", email).execute()
+            existing_email = supabase.table("User data").select("email").eq("email", email).execute()
             if existing_email.data:
                 st.warning("Email already exists in the database. Please use a different email address.")
             else:
